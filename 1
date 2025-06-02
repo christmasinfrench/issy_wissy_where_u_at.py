@@ -1,0 +1,142 @@
+import requests
+
+# Step 1: Where you at? Let's use your coordinates.
+your_location = {
+    "lat": 34.0522,  # example: Los Angeles latitude
+    "lon": -118.2437  # example: Los Angeles longitude
+}
+
+# Step 2: Get ISS pass times from Open Notify
+response = requests.get("http://api.open-notify.org/iss-pass.json", params=your_location)
+data = response.json()
+
+# Step 3: Display it in a ✨vibey✨ way
+from datetime import datetime
+
+print("Upcoming ISS passes over your location:\n")
+for pass_time in data['response']:
+    risetime = datetime.fromtimestamp(pass_time['risetime'])
+    duration = pass_time['duration']
+    print(f"🛰️  Pass at {risetime} for {duration} seconds")
+import requests
+from datetime import datetime
+
+# Brookhaven, PA coordinates
+location = {
+    "lat": 39.8723,
+    "lon": -75.3877
+}
+
+# Make the API request
+response = requests.get("http://api.open-notify.org/iss-pass.json", params=location)
+
+# Parse the response
+if response.status_code == 200:
+    data = response.json()
+    print("🌌 Upcoming ISS passes over Brookhaven, PA:\n")
+    for i, pass_time in enumerate(data['response'], start=1):
+        risetime = datetime.fromtimestamp(pass_time['risetime'])
+        duration = pass_time['duration']
+        print(f"🛰️  Pass {i}: {risetime} — visible for {duration} seconds")
+else:
+    print("⚠️ Couldn't get data from the ISS API. NASA might be busy or judging you.")
+import requests
+from datetime import datetime
+
+# === Brookhaven, PA ===
+location = {
+    "lat": 39.8723,
+    "lon": -75.3877
+}
+
+# === Get ISS pass data ===
+print("🚀 Checking ISS flyovers for Brookhaven, PA...\n")
+response = requests.get("http://api.open-notify.org/iss-pass.json", params=location)
+
+if response.status_code == 200:
+    data = response.json()
+    passes = data['response']
+
+    print(f"🌌 Upcoming ISS Flyovers ({len(passes)} total):\n")
+
+    for i, pass_info in enumerate(passes, start=1):
+        risetime = datetime.fromtimestamp(pass_info['risetime'])
+        duration = pass_info['duration']
+        
+        # Sassy descriptions based on time of day
+        if 5 <= risetime.hour < 12:
+            time_vibe = "☀️ Morning moment to touch grass"
+        elif 12 <= risetime.hour < 17:
+            time_vibe = "🌤️ Afternoon sky-check (with iced coffee)"
+        elif 17 <= risetime.hour < 21:
+            time_vibe = "🌇 Prime stargazing hours"
+        else:
+            time_vibe = "🌙 Midnight vibes and cosmic overthinking"
+
+        print(f"🛰️  Pass {i}:")
+        print(f"    Time     : {risetime.strftime('%Y-%m-%d %I:%M %p')}")
+        print(f"    Duration : {duration} seconds")
+        print(f"    Vibe     : {time_vibe}\n")
+
+else:
+    print("⚠️ Error: Couldn’t reach the ISS API. NASA might be ghosting us today.")
+import requests
+from datetime import datetime
+
+# === Brookhaven, PA ===
+location = {
+    "lat": 39.8723,
+    "lon": -75.3877
+}
+
+# === File to save the results ===
+filename = "issy_wissy_report.txt"
+
+# === Get ISS pass data ===
+print("🚀 ISSY WISSY WHERE U AT...\n")
+response = requests.get("http://api.open-notify.org/iss-pass.json", params=location)
+
+if response.status_code == 200:
+    data = response.json()
+    passes = data['response']
+
+    header = f"🌌 ISS Flyovers — Brookhaven, PA ({len(passes)} total)\nGenerated: {datetime.now()}\n\n"
+    output = header
+    print(header)
+
+    for i, pass_info in enumerate(passes, start=1):
+        risetime = datetime.fromtimestamp(pass_info['risetime'])
+        duration = pass_info['duration']
+
+        # Time-of-day vibe check
+        hour = risetime.hour
+        if 5 <= hour < 12:
+            time_vibe = "☀️ Morning moment to touch grass"
+        elif 12 <= hour < 17:
+            time_vibe = "🌤️ Afternoon sky-check (with iced coffee)"
+        elif 17 <= hour < 21:
+            time_vibe = "🌇 Prime stargazing hours"
+        else:
+            time_vibe = "🌙 Midnight vibes and cosmic overthinking"
+
+        entry = (
+            f"🛰️  Pass {i}:\n"
+            f"    Time     : {risetime.strftime('%Y-%m-%d %I:%M %p')}\n"
+            f"    Duration : {duration} seconds\n"
+            f"    Vibe     : {time_vibe}\n\n"
+        )
+
+        print(entry)
+        output += entry
+
+    # Write to file
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write(output)
+
+    print(f"✅ Results saved to '{filename}'. ISSY WISSY has been located.\n")
+
+else:
+    error_msg = "⚠️ Error: ISS API is being shady. Try again later.\n"
+    print(error_msg)
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write(error_msg)
